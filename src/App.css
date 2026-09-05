@@ -1,63 +1,431 @@
-/* Temporary CSS */
+/* ==========================================================================
+   App.css — Lokta Borrower Copilot
+   Simple Black/White Dark Theme & Form / Negotiation Card Styling
+   ========================================================================== */
 
-body {
-  margin: 0;
-  background: #17181f;
-  color: #d6d8e0;
-  font-family: Arial, sans-serif;
+/* --------------------------------------------------------------------------
+   App Header & Meta Bar
+   -------------------------------------------------------------------------- */
+.app-header {
+  border-bottom: 1px solid var(--rule, #2f2834);
+  padding-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
 }
 
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.6rem;
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--muted, #9e959d);
+}
+
+.meta span b {
+  color: var(--ink, #f0edf0);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Form Container
+   -------------------------------------------------------------------------- */
 form {
-  width: 90%;
-  max-width: 900px;
-  margin: 40px auto;
-  text-align: center;
+  width: 100%;
+  margin: 0 auto 3rem;
+  text-align: left;
+  background: var(--bg2, #191820);
+  border: 1px solid var(--rule, #2f2834);
+  border-radius: 8px;
+  padding: 2rem 2.25rem;
+}
+
+@media (max-width: 640px) {
+  form {
+    padding: 1.25rem;
+  }
 }
 
 .form-field {
-  margin: 18px 0;
+  margin: 0 0 1.85rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-field:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0.5rem;
 }
 
 .form-field > label {
   display: block;
-  font-size: 20px;
-  margin-bottom: 8px;
+  font-family: var(--body, "Source Sans 3", sans-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink, #f0edf0);
+  margin-bottom: 0.75rem;
+  line-height: 1.35;
 }
 
+/* --------------------------------------------------------------------------
+   Option Chips / Tiles (Radio / Checkbox)
+   -------------------------------------------------------------------------- */
 .options {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 10px 18px;
+  gap: 0.6rem 0.75rem;
 }
 
 .options label {
-  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  color: var(--ink-secondary, #c8c2c6);
+  background: var(--bg, #121216);
+  border: 1px solid var(--rule, #2f2834);
+  padding: 0.55rem 0.9rem;
+  border-radius: 6px;
   cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease-in-out;
 }
 
-input[type="number"] {
-  width: 180px;
-  padding: 8px;
-  font-size: 16px;
+.options label:hover {
+  border-color: var(--muted, #9e959d);
+  color: var(--ink, #f0edf0);
+  background: rgba(255, 255, 255, 0.03);
 }
 
-input[type="radio"] {
-  margin-right: 5px;
+.options label:has(input:checked) {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Input Fields
+   -------------------------------------------------------------------------- */
+input[type="number"],
+input[type="text"] {
+  width: 100%;
+  max-width: 22rem;
+  background: var(--bg, #121216);
+  border: 1px solid var(--rule, #2f2834);
+  color: var(--ink, #f0edf0);
+  padding: 0.7rem 0.95rem;
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus {
+  outline: none;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  accent-color: #ffffff;
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+}
+
+.credit-score {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--bg, #121216);
+  border: 1px solid var(--rule, #2f2834);
+  border-radius: 6px;
+  max-width: 24rem;
+}
+
+.credit-score label {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ink, #f0edf0);
 }
 
 .error {
   display: block;
-  color: #ff6b6b;
-  font-size: 14px;
-  margin-top: 5px;
+  color: var(--stretch, #f87171);
+  font-size: 0.84rem;
+  margin-top: 0.45rem;
+  font-family: var(--body, "Source Sans 3", sans-serif);
 }
 
-button {
-  margin-top: 15px;
-  padding: 10px 24px;
-  border: none;
-  border-radius: 5px;
+/* --------------------------------------------------------------------------
+   Buttons & CTAs
+   -------------------------------------------------------------------------- */
+button[type="submit"] {
+  margin-top: 1.25rem;
+  padding: 0.85rem 2.25rem;
+  background: #ffffff;
+  color: #121216;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  font-family: var(--body, "Source Sans 3", sans-serif);
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
   cursor: pointer;
-  font-size: 16px;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+button[type="submit"]:hover {
+  background: #e2dede;
+  border-color: #e2dede;
+  transform: translateY(-1px);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   Tab Switcher / View Toggle
+   -------------------------------------------------------------------------- */
+.results-view {
+  margin-top: 3rem;
+  border-top: 1px solid var(--rule, #2f2834);
+  padding-top: 2rem;
+}
+
+.tab-switcher {
+  display: inline-flex;
+  background: var(--bg2, #191820);
+  border: 1px solid var(--rule, #2f2834);
+  border-radius: 8px;
+  padding: 0.35rem;
+  gap: 0.35rem;
+  margin-bottom: 2rem;
+}
+
+.tab-btn,
+.toggle-btn {
+  font-family: var(--body, "Source Sans 3", sans-serif);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.55rem 1.25rem;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--muted, #9e959d);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover,
+.toggle-btn:hover {
+  color: var(--ink, #f0edf0);
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: #121216;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-btn {
+  background: var(--bg2, #191820);
+  border: 1px solid var(--rule, #2f2834);
+  color: var(--ink, #f0edf0);
+  margin-bottom: 1.5rem;
+}
+
+.toggle-btn:hover {
+  border-color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   Negotiation Card Styling (Deliverable O1-O4 branch takeaway)
+   -------------------------------------------------------------------------- */
+.negotiation-card {
+  max-width: 44rem;
+  margin: 1.5rem auto 4rem;
+  background: var(--bg2, #191820);
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  padding: 2.25rem 2.5rem;
+  text-align: left;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  position: relative;
+  animation: fadeIn 0.35s ease-out;
+}
+
+@media (max-width: 640px) {
+  .negotiation-card {
+    padding: 1.4rem;
+  }
+}
+
+.negotiation-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 1px solid var(--rule, #2f2834);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.negotiation-card-header h2 {
+  font-family: var(--display, "Newsreader", Georgia, serif);
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 0 0 0.35rem;
+}
+
+.negotiation-card-header p {
+  color: var(--muted, #9e959d);
+  font-size: 0.95rem;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.card-verdict {
+  font-family: var(--body, "Source Sans 3", sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 680px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 440px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-metric {
+  background: var(--bg, #121216);
+  border: 1px solid var(--rule, #2f2834);
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-metric span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #9e959d);
+  margin-bottom: 0.4rem;
+}
+
+.card-metric strong {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.card-section {
+  background: var(--bg, #121216);
+  border: 1px solid var(--rule, #2f2834);
+  border-radius: 6px;
+  padding: 1.25rem 1.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-section h3 {
+  font-family: var(--display, "Newsreader", Georgia, serif);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--ink, #f0edf0);
+  margin: 0 0 0.75rem;
+}
+
+.card-section ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--ink-secondary, #c8c2c6);
+  font-size: 0.92rem;
+}
+
+.card-section li {
+  margin-bottom: 0.4rem;
+}
+
+.card-section li::marker {
+  color: var(--accent, #ffffff);
+}
+
+.negotiation-request {
+  background: var(--accent-soft, rgba(255, 255, 255, 0.05));
+  border-left: 3px solid #ffffff;
+  border-radius: 0 6px 6px 0;
+  padding: 1.15rem 1.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.negotiation-request h3 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted, #9e959d);
+  margin: 0 0 0.5rem;
+}
+
+.negotiation-request p {
+  font-family: var(--display, "Newsreader", Georgia, serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: #ffffff;
+  margin: 0;
+}
+
+.card-disclaimer {
+  font-size: 0.8rem;
+  color: var(--muted, #9e959d);
+  line-height: 1.45;
+  margin: 0;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   App Footer
+   -------------------------------------------------------------------------- */
+.app-footer {
+  border-top: 1px solid var(--rule, #2f2834);
+  padding-top: 1.75rem;
+  margin-top: 4rem;
+  font-family: var(--display, "Newsreader", Georgia, serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--muted, #9e959d);
+  text-align: left;
 }

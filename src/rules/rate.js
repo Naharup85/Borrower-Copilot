@@ -3,7 +3,9 @@ import {BASE_RATE_BANDS} from "../data/rateBand";
 
 export function getRateBand(loanType, creditScore, hasCollateral) {
 
+  
   if(loanType === "business" && hasCollateral) {
+    
     return {
       band: { ...BASE_RATE_BANDS.lap },
       confidence: "medium",

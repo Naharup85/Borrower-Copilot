@@ -12,6 +12,7 @@ export default function QuestionForm({ setResult }) {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -39,8 +40,6 @@ export default function QuestionForm({ setResult }) {
   const loanType = watch("loanType");
 
   function onSubmit(data) {
-    console.log("Form data:", data);
-
     const loanAmount = Math.max(0, Number(data.loanAmount));
     const income = Math.max(0, Number(data.income));
     const existingEMI = Math.max(0, Number(data.existingEMI));
@@ -52,12 +51,9 @@ export default function QuestionForm({ setResult }) {
         : null;
 
     const recentBounce = data.recentBounce;
-    const emergencySavingsMonths =
-      data.emergencySavingsMonths === ""
-        ? null
-        : Number(data.emergencySavingsMonths);
+    const emergencySavingsMonths = data.emergencySavingsMonths === "" ? null : Number(data.emergencySavingsMonths);
 
-    const hasCollateral = data.hasCollateral;
+    const hasCollateral = Boolean(data.hasCollateral);
 
     console.log({
       loanAmount,
@@ -74,7 +70,173 @@ export default function QuestionForm({ setResult }) {
       householdExpenses: Number(data.householdExpenses),
     });
 
-    // We will connect your rules here after the form works correctly.
+
+    try {
+
+      const loanAmount = Math.max(0, Number(data.loanAmount));
+      const income = Math.max(0, Number(data.income));
+      const existingEMI = Math.max(0, Number(data.existingEMI));
+      const householdExpenses = Math.max(
+        0,
+        Number(data.householdExpenses)
+      );
+      const age = Number(data.age);
+
+      const borrowerType = data.borrowerType;
+      const loanType = data.loanType;
+
+      const creditScore = data.hasCreditScore === "true" ? Number(data.creditScore) : null;
+
+      const recentBounce = Boolean(data.recentBounce);
+      const hasCollateral = Boolean(data.hasCollateral);
+      const emergencySavingsMonths = data.emergencySavingsMonths === "" || data.emergencySavingsMonths == null ? null : Number(data.emergencySavingsMonths);
+      if (loanType === "lap" && !hasCollateral) {
+        setError("hasCollateral", {
+          type: "required",
+          message: "Loan against property requires collateral",
+        });
+        return;
+      }
+      const foirRules = getFOIRRules(borrowerType);
+
+      if (!foirRules) {
+        throw new Error("Invalid borrower type.");
+      }
+
+      const lenderFOIRCap = foirRules.lender * 100;
+      const safeFOIRCap = foirRules.safe * 100;
+
+
+      const rateResult = getRateBand(loanType, creditScore, hasCollateral);
+
+      const rateBand = rateResult.band;
+
+      const lowPlanningRate = rateBand.low;
+      const highPlanningRate = rateBand.high;
+
+      const amountResult = getMaxAmount(income, existingEMI, highPlanningRate, 36, borrowerType);
+      const requestedEMI = calculateEMI(loanAmount, highPlanningRate, 36);
+
+      const requestedFOIR = calculateFOIR(income, existingEMI, requestedEMI);
+
+
+
+      const safeEMICap = Math.max(0, income * foirRules.safe - existingEMI);
+
+      const lenderEMICap = Math.max(0, income * foirRules.lender - existingEMI);
+
+      const processingFee = calculateProcessingFee(loanAmount, loanType);
+
+      const aprResultHigh = calculateAPR(loanAmount, highPlanningRate, 36, processingFee);
+      const aprResultLow = calculateAPR(loanAmount, lowPlanningRate, 36, processingFee);
+
+
+      const verdictResult = getEligibilityVerdict({ foir: requestedFOIR, creditScore, recentBounce, emergencySavingsMonths, foirCapSafe: safeFOIRCap, });
+
+
+      const stressIncome = income * 0.85;
+
+      const stressFOIR = calculateFOIR(stressIncome, existingEMI, requestedEMI);
+
+      const tenureOptions = [24, 36, 48, 60].map((months) => {
+        const emi = calculateEMI(loanAmount, highPlanningRate, months);
+
+        return {
+          months,
+          emi: Math.round(emi),
+          totalPayment: Math.round(emi * months),
+          totalInterest: Math.round(
+            emi * months - loanAmount
+          ),
+          withinSafeEMI: emi <= safeEMICap,
+        };
+      }
+      );
+
+      const result = {
+        borrower: {
+          age,
+          borrowerType,
+          income,
+          householdExpenses,
+          existingEMI,
+          creditScore,
+        },
+
+        loan: {
+          purpose: data.loanPurpose,
+          type: loanType,
+          requestedAmount: loanAmount,
+        },
+
+        affordability: {
+          lenderFOIRCap,
+          safeFOIRCap,
+
+          lenderEMICap: Math.round(lenderEMICap),
+          safeEMICap: Math.round(safeEMICap),
+
+          requestedEMI: Math.round(requestedEMI),
+          requestedFOIR: Number(requestedFOIR.toFixed(2)),
+
+          lenderLikelyAmount: amountResult.lenderLikelyAmount,
+
+          borrowerSafeAmount: amountResult.borrowerSafeAmount,
+          remainingAfterExpenses: Math.round(income - (householdExpenses + existingEMI + requestedEMI)),
+        },
+
+        rate: {
+          low: rateBand.low,
+          high: rateBand.high,
+          planningRate: highPlanningRate,
+          confidence: rateResult.confidence,
+          reason: rateResult.reason,
+        },
+
+        apr: {
+          low: Number(aprResultLow.apr),
+          high: Number(aprResultHigh.apr),
+          processingFee: Math.round(aprResultHigh.processingFee),
+          gst: aprResultHigh.gst,
+        },
+
+        verdict: verdictResult,
+
+        tenureOptions,
+
+        stress: {
+          incomeDropPercent: 15,
+          stressIncome: Math.round(stressIncome),
+          stressFOIR: Number(stressFOIR.toFixed(2)),
+          safeFOIRCap: Math.round(safeFOIRCap),
+        },
+
+        explanation: {
+          amount: amountResult.reason,
+
+          emi:
+            `Your safer monthly EMI ceiling is ₹${Math.round(
+              safeEMICap
+            ).toLocaleString("en-IN")} because existing EMIs are deducted from the ${safeFOIRCap}% safe FOIR limit.`,
+
+          rate: rateResult.reason,
+
+          stress:
+            `If income falls by 15%, the requested EMI would use ${stressFOIR.toFixed(
+              0
+            )}% of monthly income.`,
+        },
+      };
+
+
+      console.log("BORROWER COPILOT RESULT:", result);
+
+      setResult(result);
+
+    } catch (error) {
+      console.error("Borrower Copilot calculation error:", error);
+    }
+
   }
 
   return (
@@ -518,7 +680,11 @@ export default function QuestionForm({ setResult }) {
             Do you have property or another asset that could be used as
             collateral?
           </label>
-
+          {errors.hasCollateral && (
+            <span className="error">
+              {errors.hasCollateral.message}
+            </span>
+          )}
           <div className="options">
             <label>
               <input

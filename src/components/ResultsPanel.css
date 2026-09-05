@@ -1,0 +1,530 @@
+/* ==========================================================================
+   ResultsPanel.css — Lokta Borrower Copilot Design System
+   Simple Black/White Dark Aesthetic
+   ========================================================================== */
+
+.results-container {
+  max-width: 54rem;
+  margin: 2.5rem auto 4rem;
+  text-align: left;
+  animation: fadeIn 0.35s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Header / Profile Summary Bar
+   -------------------------------------------------------------------------- */
+.results-header {
+  border-bottom: 1px solid var(--rule, #33293a);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.results-eyebrow {
+  font-family: var(--body, "Source Sans 3", sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted, #a99da5);
+  margin: 0 0 0.5rem;
+}
+
+.results-title {
+  font-family: var(--display, "Newsreader", Georgia, serif);
+  font-weight: 500;
+  font-size: clamp(1.8rem, 3.5vw, 2.3rem);
+  line-height: 1.15;
+  color: var(--ink, #eee6ea);
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.results-meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.6rem;
+  font-size: 0.88rem;
+  color: var(--muted, #a99da5);
+  background: var(--bg2, #1f1822);
+  border: 1px solid var(--rule, #33293a);
+  padding: 0.85rem 1.15rem;
+  border-radius: 6px;
+}
+
+.results-meta-bar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.results-meta-bar span strong {
+  color: var(--ink, #eee6ea);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Outputs Grid
+   -------------------------------------------------------------------------- */
+.outputs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+.output-card {
+  background: var(--bg2, #1f1822);
+  border: 1px solid var(--rule, #33293a);
+  border-radius: 8px;
+  padding: 1.6rem 1.75rem;
+  transition: border-color 0.2s ease;
+}
+
+.output-card:hover {
+  border-color: var(--rule-light, #483b50);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule, #33293a);
+  padding-bottom: 1rem;
+}
+
+.output-tag {
+  display: inline-block;
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted, #a99da5);
+  margin-bottom: 0.35rem;
+}
+
+.card-title {
+  font-family: var(--display, "Newsreader", Georgia, serif);
+  font-size: 1.55rem;
+  font-weight: 500;
+  color: var(--ink, #eee6ea);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   Verdict Badge (Output 01)
+   -------------------------------------------------------------------------- */
+.verdict-badge {
+  font-family: var(--body, "Source Sans 3", sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+
+.verdict-badge.borrow {
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+}
+
+.verdict-badge.don\'t-borrow,
+.verdict-badge.dont-borrow,
+.verdict-badge.don-t-borrow {
+  background: rgba(248, 113, 113, 0.14);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+}
+
+.verdict-badge.borrow-less {
+  background: rgba(224, 162, 101, 0.14);
+  color: #e0a265;
+  border: 1px solid rgba(224, 162, 101, 0.4);
+}
+
+.verdict-reason {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink, #eee6ea);
+  margin: 0 0 1.5rem;
+  font-family: var(--body, "Source Sans 3", sans-serif);
+}
+
+/* --------------------------------------------------------------------------
+   Metric Boxes (4 columns)
+   -------------------------------------------------------------------------- */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .metrics-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-box {
+  background: var(--bg, #17121a);
+  border: 1px solid var(--rule, #33293a);
+  border-radius: 6px;
+  padding: 1rem 1.05rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-box-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #a99da5);
+  margin-bottom: 0.4rem;
+}
+
+.metric-box-val {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 1.45rem;
+  font-weight: 500;
+  color: var(--ink, #eee6ea);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.35rem;
+}
+
+.metric-box-sub {
+  font-size: 0.78rem;
+  color: var(--muted, #a99da5);
+  line-height: 1.35;
+  margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Amount Comparison (Output 02)
+   -------------------------------------------------------------------------- */
+.amount-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .amount-comparison {
+    grid-template-columns: 1fr;
+  }
+}
+
+.amount-box {
+  position: relative;
+  background: var(--bg, #17121a);
+  border: 1px solid var(--rule, #33293a);
+  border-radius: 6px;
+  padding: 1.35rem 1.25rem;
+}
+
+.amount-box.safe-focus {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, var(--bg, #17121a) 100%);
+}
+
+.amount-box-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #a99da5);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+}
+
+.amount-box-badge.recommended {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.amount-val {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 1.95rem;
+  font-weight: 600;
+  color: var(--ink, #eee6ea);
+  margin: 0.5rem 0 0.65rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.amount-desc {
+  font-size: 0.88rem;
+  color: var(--muted, #a99da5);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.amount-desc strong {
+  color: var(--ink, #eee6ea);
+}
+
+/* --------------------------------------------------------------------------
+   Callout Box (Editorial note)
+   -------------------------------------------------------------------------- */
+.callout-box {
+  background: var(--accent-soft, rgba(255, 255, 255, 0.05));
+  border-left: 3px solid var(--accent, #ffffff);
+  padding: 0.9rem 1.15rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink, #eee6ea);
+  border-radius: 0 4px 4px 0;
+}
+
+/* --------------------------------------------------------------------------
+   Rate & APR (Output 03)
+   -------------------------------------------------------------------------- */
+.confidence-pill {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--rule, #33293a);
+  color: var(--ink, #eee6ea);
+}
+
+.rate-apr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .rate-apr-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rate-figure {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--ink, #eee6ea);
+  margin: 0.4rem 0 0.5rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.apr-breakdown {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--rule, #33293a);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.apr-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted, #a99da5);
+}
+
+.apr-row strong {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  color: var(--ink, #eee6ea);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   EMI Ceiling & Matrix & Stress (Output 04)
+   -------------------------------------------------------------------------- */
+.ceiling-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 640px) {
+  .ceiling-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ceiling-stat {
+  background: var(--bg, #17121a);
+  border: 1px solid var(--rule, #33293a);
+  border-radius: 6px;
+  padding: 0.95rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.ceiling-stat-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted, #a99da5);
+  margin-bottom: 0.35rem;
+}
+
+.ceiling-stat-val {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--ink, #eee6ea);
+  font-variant-numeric: tabular-nums;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--rule, #33293a);
+  border-radius: 6px;
+}
+
+.tenure-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: var(--bg, #17121a);
+}
+
+.tenure-table th,
+.tenure-table td {
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--rule, #33293a);
+}
+
+.tenure-table th {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted, #a99da5);
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--rule-light, #483b50);
+}
+
+.tenure-table tr:last-child td {
+  border-bottom: none;
+}
+
+.num-cell {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink, #eee6ea);
+}
+
+.status-tag {
+  display: inline-block;
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.status-tag.safe {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.28);
+}
+
+.status-tag.stretch {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.28);
+}
+
+/* --------------------------------------------------------------------------
+   Stress Scenario Box
+   -------------------------------------------------------------------------- */
+.stress-box {
+  background: rgba(224, 162, 101, 0.06);
+  border: 1px solid rgba(224, 162, 101, 0.28);
+  border-left: 3px solid var(--warn, #e0a265);
+  border-radius: 6px;
+  padding: 1.1rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.stress-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.stress-tag {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--warn, #e0a265);
+  background: rgba(224, 162, 101, 0.16);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.stress-title {
+  font-family: var(--display, "Newsreader", Georgia, serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--ink, #eee6ea);
+  margin: 0;
+}
+
+.stress-text {
+  font-size: 0.88rem;
+  color: var(--muted, #a99da5);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.stress-text strong {
+  font-family: var(--mono, "IBM Plex Mono", monospace);
+  color: var(--ink, #eee6ea);
+  font-variant-numeric: tabular-nums;
+}

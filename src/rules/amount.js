@@ -24,9 +24,10 @@ export function getMaxAmount(income,existingEMI,annualRate,tenureMonths,borrower
   if (income <= 0 || existingEMI < 0 || annualRate <=0 || tenureMonths<=0) {
     throw new Error("Invalid loan calculation inputs");
   }
-
+  
   const lenderMaxEMI = Math.max(0,income * rules.lender - existingEMI);
   const borrowerSafeEMI = Math.max(0,income * rules.safe - existingEMI);
+
   const lenderLikelyAmount = emiToPrincipal(lenderMaxEMI,annualRate,tenureMonths);
   const borrowerSafeAmount = emiToPrincipal(borrowerSafeEMI,annualRate,tenureMonths);
 
