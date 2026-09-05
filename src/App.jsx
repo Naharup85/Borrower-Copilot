@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import QuestionForm from './components/QuestionForm'
+import QuestionForm from './components/QuestionForm '
 import NegotiationCard from './components/NegotiationCard'
 import ResultsPanel from './components/ResultsPanel'
 

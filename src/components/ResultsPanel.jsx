@@ -1,7 +1,21 @@
 
 
 export default function ResultsPanel({ result }) {
-    const { rate, apr, amount, foir, eligibility, foirCapSafe, requestedEMI, loanAmount, tenureMonths,safeEMI } = result    
+    
+    const {
+      loanRequestAmount,
+      loanRequestEMI,
+      loanRequestAnnualRate,
+      lenderGivenAmount,
+      lenderGivenAmountEMI,
+      borrowerSafeAmount,
+      borrowerSafeAmountEMI,
+      lenderAmountReason,
+      apr,      
+      FOIR,
+      eligibility,
+      foirCapSafe,
+    } = result    
     return (
         <>
             <div className="results-container">
@@ -26,15 +40,15 @@ export default function ResultsPanel({ result }) {
                     <div className="result-value">
                         <div className="result-row">
                             <span>Lender likely approved</span>
-                            <span>{amount.lenderLikelyAmount}</span>
+                            <span>{lenderGivenAmount}</span>
                         </div>
                         <div className="result-row">
                             <span>Safer amount </span>
-                            <span>{amount.borrowerSafeAmount}</span>
+                            <span>{borrowerSafeAmount}</span>
                         </div>
                         <div className="result-row">
                             <span>We recommend </span>
-                            <span>{amount.borrowerSafeAmount}</span>
+                            <span>{lenderGivenAmount>borrowerSafeAmount?borrowerSafeAmount:lenderGivenAmount}</span>
                         </div>
                     </div>
                 </div>
@@ -45,23 +59,22 @@ export default function ResultsPanel({ result }) {
                     <div className="result-value">
                         <div className="result-row">
                             <span>Requested loan amount </span>
-                            <span>{loanAmount}</span>
+                            <span>{loanRequestAmount}</span>
                         </div>
                         <div className="result-row">
-                            <span>If you borrow {loanAmount}, your EMI will be </span>
-                            <span>{requestedEMI}</span>
+                            <span>If you borrow {}, your EMI will be </span>
+                            <span>{loanRequestEMI}</span>
                         </div>
                         <div className="result-row">
-                            <span>This means your FOIR will be {foir}%, which is above the safe limit of {foirCapSafe}%.</span>
-                            <span>{apr.apr}</span>
+                            <span>This means your FOIR will be {FOIR}%, which is above the safe limit of {foirCapSafe}%.</span>
                         </div>
                         <div className="result-row">
                             <span>To keep your FOIR at the safe limit of {foirCapSafe}%, you should borrow </span>
-                            <span>{amount.borrowerSafeAmount}</span>
+                            <span>{borrowerSafeAmount}</span>
                         </div>
                         <div className="result-row">
                             <span>Your EMI for this safe  amount will be </span>
-                            <span>{safeEMI}</span>
+                            <span>{borrowerSafeAmountEMI}</span>
                         </div>
                     </div>
                 </div>

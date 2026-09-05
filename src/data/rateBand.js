@@ -1,4 +1,4 @@
-const BASE_RATE_BANDS = {
+export const BASE_RATE_BANDS = {
   home: { low: 8.0, high: 11.0 },
   lap: { low: 9.0, high: 13.0 },
   gold: { low: 9.0, high: 15.0 },
@@ -8,10 +8,10 @@ const BASE_RATE_BANDS = {
 };
 
 
-export function getBaseRateBand(loanTyp) {
-  const base = BASE_RATE_BANDS[loanTyp] ?? [];
-  if(base.length === 0) {
-    alert(`Invalid loan type: ${loanTyp}`);
+export function getBaseRateBand(loanType) {
+  const base = BASE_RATE_BANDS[loanType] ?? [];
+  if(!base) {
+    throw new Error(`Invalid loan type: ${loanType}`);
   }
   return base;
 }

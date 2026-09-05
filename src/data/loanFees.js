@@ -31,7 +31,9 @@ export const PROCESSING_FEES = {
 };
 export function calculateProcessingFee(loanAmount, loanType) {
   const fee = PROCESSING_FEES[loanType];
-  if (!fee) return 0;
+  if (!fee){
+    throw new Error("Invalid loan type");
+  }
 
   return loanAmount * (fee.value / 100);
 }

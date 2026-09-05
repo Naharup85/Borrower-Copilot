@@ -1,4 +1,5 @@
 import {getBaseRateBand} from "../data/rateBand";
+import {BASE_RATE_BANDS} from "../data/rateBand";
 
 export function getRateBand(loanType, creditScore, hasCollateral) {
 
