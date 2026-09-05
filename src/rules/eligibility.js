@@ -1,6 +1,6 @@
 
 export function getEligibilityVerdict(answers) {
-  const {foir,creditScore,recentBounce,emergencySavingsMonths,foirCapSafe,} = answers;
+  const {foir,creditScore,recentBounce,emergencySavingsMonths,foirCapSafe} = answers;
 
   if(foir > 60) {
     return {

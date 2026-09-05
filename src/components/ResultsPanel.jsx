@@ -74,11 +74,13 @@ export default function ResultsPanel({ result }) {
               <div className="metric-box-sub">Institutional limit</div>
             </div>
             <div className="metric-box">
-              <div className="metric-box-label">Disposable Surplus</div>
+              <div className="metric-box-label">Cash Before Proposed EMI</div>
               <div className="metric-box-val">
                 {formatINR(affordability.remainingAfterExpenses)}
               </div>
-              <div className="metric-box-sub">Remaining after all expenses</div>
+              <div className="metric-box-sub">
+                After household expenses + existing EMI
+              </div>
             </div>
           </div>
         </section>

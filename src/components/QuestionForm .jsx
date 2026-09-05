@@ -2,18 +2,20 @@ import { useForm } from "react-hook-form";
 import { calculateFOIR, getFOIRRules } from "../rules/foir";
 import { getRateBand } from "../rules/rate";
 import { getEligibilityVerdict } from "../rules/eligibility";
-import { calculateEMI } from "../rules/emi";
+import { calculateEMI,getTenureOptionsByAge } from "../rules/emi";
 import { getMaxAmount } from "../rules/amount";
 import { calculateAPR } from "../rules/apr";
 import { calculateProcessingFee } from "../data/loanFees";
 
 export default function QuestionForm({ setResult }) {
+ 
   const {
     register,
     handleSubmit,
     watch,
     setError,
-    formState: { errors },
+
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       loanPurpose: "",
@@ -35,6 +37,7 @@ export default function QuestionForm({ setResult }) {
     },
   });
 
+  const loanPurpose = watch("loanPurpose");
   const hasCreditScore = watch("hasCreditScore");
   const borrowerType = watch("borrowerType");
   const loanType = watch("loanType");
@@ -55,21 +58,7 @@ export default function QuestionForm({ setResult }) {
 
     const hasCollateral = Boolean(data.hasCollateral);
 
-    console.log({
-      loanAmount,
-      income,
-      existingEMI,
-      age,
-      creditScore,
-      recentBounce,
-      emergencySavingsMonths,
-      hasCollateral,
-      loanType: data.loanType,
-      borrowerType: data.borrowerType,
-      loanPurpose: data.loanPurpose,
-      householdExpenses: Number(data.householdExpenses),
-    });
-
+    
 
     try {
 
@@ -90,10 +79,10 @@ export default function QuestionForm({ setResult }) {
       const recentBounce = Boolean(data.recentBounce);
       const hasCollateral = Boolean(data.hasCollateral);
       const emergencySavingsMonths = data.emergencySavingsMonths === "" || data.emergencySavingsMonths == null ? null : Number(data.emergencySavingsMonths);
-      if (loanType === "lap" && !hasCollateral) {
+      if ((loanType === "lap" || loanType === "homeloan" || loanType === "twoWheeler" || loanType === "gold") && !hasCollateral) {
         setError("hasCollateral", {
           type: "required",
-          message: "Loan against property requires collateral",
+          message: `Loan against ${loanType.toUpperCase()} requires collateral`,
         });
         return;
       }
@@ -131,14 +120,16 @@ export default function QuestionForm({ setResult }) {
       const aprResultLow = calculateAPR(loanAmount, lowPlanningRate, 36, processingFee);
 
 
-      const verdictResult = getEligibilityVerdict({ foir: requestedFOIR, creditScore, recentBounce, emergencySavingsMonths, foirCapSafe: safeFOIRCap, });
+      const verdictResult = getEligibilityVerdict({ foir: requestedFOIR, creditScore, recentBounce, emergencySavingsMonths, foirCapSafe: safeFOIRCap});
 
 
       const stressIncome = income * 0.85;
 
       const stressFOIR = calculateFOIR(stressIncome, existingEMI, requestedEMI);
 
-      const tenureOptions = [24, 36, 48, 60].map((months) => {
+      const tenureOptionsByAge=getTenureOptionsByAge(age);
+
+      const tenureOptions = tenureOptionsByAge.map((months) => {
         const emi = calculateEMI(loanAmount, highPlanningRate, months);
 
         return {
@@ -170,8 +161,8 @@ export default function QuestionForm({ setResult }) {
         },
 
         affordability: {
-          lenderFOIRCap,
-          safeFOIRCap,
+          lenderFOIRCap: lenderFOIRCap.toFixed(2),
+          safeFOIRCap: safeFOIRCap.toFixed(2),
 
           lenderEMICap: Math.round(lenderEMICap),
           safeEMICap: Math.round(safeEMICap),
@@ -347,6 +338,7 @@ export default function QuestionForm({ setResult }) {
         <label>What type of loan are you considering?</label>
 
         <div className="options">
+        {loanPurpose === "home" && (
           <label>
             <input
               type="radio"
@@ -357,51 +349,35 @@ export default function QuestionForm({ setResult }) {
             />
             Home loan
           </label>
+        )}
 
-          <label>
-            <input
-              type="radio"
-              value="lap"
-              {...register("loanType", {
-                required: "Please select a loan type",
-              })}
-            />
-            Loan against property
-          </label>
+        {loanPurpose === "business" && (
+          <>
+            <label>
+              <input
+                type="radio"
+                value="business"
+                {...register("loanType", {
+                  required: "Please select a loan type",
+                })}
+              />
+              Business loan
+            </label>
 
-          <label>
-            <input
-              type="radio"
-              value="gold"
-              {...register("loanType", {
-                required: "Please select a loan type",
-              })}
-            />
-            Gold loan
-          </label>
+            <label>
+              <input
+                type="radio"
+                value="lap"
+                {...register("loanType", {
+                  required: "Please select a loan type",
+                })}
+              />
+              Loan against property
+            </label>
+          </>
+        )} 
 
-          <label>
-            <input
-              type="radio"
-              value="personal"
-              {...register("loanType", {
-                required: "Please select a loan type",
-              })}
-            />
-            Personal loan
-          </label>
-
-          <label>
-            <input
-              type="radio"
-              value="business"
-              {...register("loanType", {
-                required: "Please select a loan type",
-              })}
-            />
-            Business loan
-          </label>
-
+        {loanPurpose === "vehicle" && (
           <label>
             <input
               type="radio"
@@ -412,6 +388,36 @@ export default function QuestionForm({ setResult }) {
             />
             Two-wheeler loan
           </label>
+        )}
+
+        {(loanPurpose === "education" ||
+          loanPurpose === "medical" ||
+          loanPurpose === "wedding" ||
+          loanPurpose === "debt") && (
+          <label>
+            <input
+              type="radio"
+              value="personal"
+              {...register("loanType", {
+                required: "Please select a loan type",
+              })}
+            />
+            Personal loan
+          </label>
+        )}
+
+        {loanPurpose === "other" && (
+          <label>
+            <input
+              type="radio"
+              value="personal"
+              {...register("loanType", {
+                required: "Please select a loan type",
+              })}
+              />
+              Personal loan
+            </label>
+          )}  
         </div>
 
         {errors.loanType && (
@@ -674,7 +680,7 @@ export default function QuestionForm({ setResult }) {
 
 
       {/* ADAPTIVE: COLLATERAL */}
-      {(loanType === "business" || loanType === "lap") && (
+      {(loanType === "business" || loanType === "lap" || loanType === "homeloan" || loanType === "gold" || loanType === "twoWheeler") && (
         <div className="form-field">
           <label>
             Do you have property or another asset that could be used as
@@ -713,8 +719,8 @@ export default function QuestionForm({ setResult }) {
       </div>
 
 
-      <button type="submit">
-        Continue
+      <button disabled={isSubmitting} type="submit">
+        {isSubmitting ? "Calculating your eligibility..." : "Continue"}
       </button>
     </form>
   );
