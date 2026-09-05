@@ -38,7 +38,7 @@ export function getMaxAmount(income,existingEMI,annualRate,tenureMonths,borrower
     lenderMaxEMI: Math.round(lenderMaxEMI),
     borrowerSafeEMI: Math.round(borrowerSafeEMI),
     reason:
-      `A lender may sanction around ₹${Math.round(
+      `Estimated lender-side capacity is around ₹${Math.round(
         lenderLikelyAmount
       ).toLocaleString("en-IN")} based on a ${(rules.lender * 100).toFixed(
         0
