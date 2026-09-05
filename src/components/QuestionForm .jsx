@@ -27,6 +27,7 @@ export default function QuestionForm({ setResult }) {
       householdExpenses: "",
       existingEMI: "",
       loanAmount: "",
+      incomeType:false,
 
       hasCreditScore: "",
       creditScore: null,
@@ -63,7 +64,7 @@ export default function QuestionForm({ setResult }) {
     try {
 
       const loanAmount = Math.max(0, Number(data.loanAmount));
-      const income = Math.max(0, Number(data.income));
+      const income =incomeType ?  Math.max(0, Number(data.income))/12 : Math.max(0, Number(data.income));
       const existingEMI = Math.max(0, Number(data.existingEMI));
       const householdExpenses = Math.max(
         0,
@@ -78,7 +79,7 @@ export default function QuestionForm({ setResult }) {
 
       const recentBounce = Boolean(data.recentBounce);
       const hasCollateral = Boolean(data.hasCollateral);
-      const emergencySavingsMonths = data.emergencySavingsMonths === "" || data.emergencySavingsMonths == null ? null : Number(data.emergencySavingsMonths);
+      const emergencySavingsMonths = data.emergencySavingsMonths === "" || data.emergencySavingsMonths == null ? 0 : Number(data.emergencySavingsMonths);
       if ((loanType === "lap" || loanType === "homeloan" || loanType === "twoWheeler" || loanType === "gold") && !hasCollateral) {
         setError("hasCollateral", {
           type: "required",
@@ -451,9 +452,13 @@ export default function QuestionForm({ setResult }) {
       {/* INCOME */}
       <div className="form-field">
         <label>
-          What is your typical monthly income after taxes and deductions?
+          What is your  monthly/annual income ?
         </label>
 
+        <label style={{fontSize:"0.7rem",opacity:0.8, display: "flex", alignItems: "center", gap: "0.3rem"}}>
+          <input type="checkbox" {...register("incomeType")} />
+          Check here if your income is annual
+        </label>
         <input
           type="number"
           {...register("income", {
@@ -465,7 +470,7 @@ export default function QuestionForm({ setResult }) {
             },
           })}
         />
-
+        
         {errors.income && (
           <span className="error">{errors.income.message}</span>
         )}
@@ -525,21 +530,8 @@ export default function QuestionForm({ setResult }) {
 
         <input
           type="number"
-          {...register("householdExpenses", {
-            valueAsNumber: true,
-            required: "Please enter your household expenses",
-            min: {
-              value: 0,
-              message: "Expenses cannot be negative",
-            },
-          })}
+          {...register("householdExpenses")}
         />
-
-        {errors.householdExpenses && (
-          <span className="error">
-            {errors.householdExpenses.message}
-          </span>
-        )}
       </div>
 
 
@@ -551,14 +543,7 @@ export default function QuestionForm({ setResult }) {
 
         <input
           type="number"
-          {...register("existingEMI", {
-            valueAsNumber: true,
-            required: "Please enter your existing EMI",
-            min: {
-              value: 0,
-              message: "Existing EMI cannot be negative",
-            },
-          })}
+          {...register("existingEMI")}
         />
 
         {errors.existingEMI && (
@@ -667,14 +652,7 @@ export default function QuestionForm({ setResult }) {
           type="number"
           step="0.5"
           min="0"
-          {...register("emergencySavingsMonths", {
-            valueAsNumber: true,
-            required: "Please enter your emergency savings",
-            min: {
-              value: 0,
-              message: "Savings months cannot be negative",
-            },
-          })}
+          {...register("emergencySavingsMonths")}
         />
       </div>
 
