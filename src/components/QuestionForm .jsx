@@ -46,30 +46,47 @@ export default function QuestionForm({ setResult }) {
   function onSubmit(data) {
     const loanAmount = Math.max(0, Number(data.loanAmount));
     const income = Math.max(0, Number(data.income));
-    const existingEMI = Math.max(0, Number(data.existingEMI));
+    const existingEMI = Number(data.existingEMI);
+    if(isNaN(existingEMI)||existingEMI<0){
+      setError("existingEMI", {
+        type: "required",
+        message: "Existing EMI cannot be negative",
+      });
+      return;
+    }
     const age = Number(data.age);
 
-    const creditScore =
-      data.hasCreditScore === "true"
-        ? Number(data.creditScore)
-        : null;
+    const creditScore =data.hasCreditScore === "true" ? Number(data.creditScore): null;
 
     const recentBounce = data.recentBounce;
-    const emergencySavingsMonths = data.emergencySavingsMonths === "" ? null : Number(data.emergencySavingsMonths);
-
+    const emergencySavingsMonths=Number(data.emergencySavingsMonths);
+    if(isNaN(emergencySavingsMonths)||emergencySavingsMonths<0){
+      setError("emergencySavingsMonths", {
+        type: "required",
+        message: "Emergency savings months cannot be negative",
+      });
+      return;
+    }
+    const householdExpenses = Number(data.householdExpenses);
+    if(isNaN(householdExpenses)||householdExpenses<0){
+        setError("householdExpenses", {
+          type: "required",
+          message: "Household expenses cannot be negative",
+        });
+        return;
+      }
     const hasCollateral = Boolean(data.hasCollateral);
 
+    const incomeType = Boolean(data.incomeType);
     
+  
 
     try {
 
       const loanAmount = Math.max(0, Number(data.loanAmount));
       const income =incomeType ?  Math.max(0, Number(data.income))/12 : Math.max(0, Number(data.income));
       const existingEMI = Math.max(0, Number(data.existingEMI));
-      const householdExpenses = Math.max(
-        0,
-        Number(data.householdExpenses)
-      );
+     
       const age = Number(data.age);
 
       const borrowerType = data.borrowerType;
@@ -532,6 +549,9 @@ export default function QuestionForm({ setResult }) {
           type="number"
           {...register("householdExpenses")}
         />
+        {errors.householdExpenses && (
+          <span className="error">{errors.householdExpenses.message}</span>
+        )}
       </div>
 
 
@@ -654,6 +674,11 @@ export default function QuestionForm({ setResult }) {
           min="0"
           {...register("emergencySavingsMonths")}
         />
+        {errors.emergencySavingsMonths && (
+          <span className="error">
+            {errors.emergencySavingsMonths.message}
+          </span>
+        )}
       </div>
 
 
